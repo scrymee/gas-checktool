@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    <title></title>
+    <!-- boostrapを読み込む -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <!-- chartJSを読み込む -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+        integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
+        crossorigin="anonymous"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+
+    <link rel="apple-touch-icon"
+        href="https://4.bp.blogspot.com/-1865joK51EI/Wb8gnbhjDpI/AAAAAAABGy4/ByWIh6Zt-hM-CCEzYWBxcuTJOOWz26kYwCLcBGAs/s800/pet_omocha_neko.png" />
+</head>
+
+<body>
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a
+                        href="https://script.google.com/macros/s/AKfycbxiKtddF1pqZiEWS_1V9sCJ8KoQ7YW1_uevz-b3t_I/dev?pageId=admin">Home</a>
+                </li>
+            </ol>
+        </nav>
+        <h1 class="h2">Dashboard</h1>
+        <p>This is the homepage of a simple admin interface which is part of a tutorial written on Themesberg
+            <a href="<?= url ?>/admin">Admin</a>
+            <span data-href="<?= getAppUrl() ?>/admin" onclick="doAdmin()">Admin</a>
+        </p>
+        <div class="row" id="content">
+            <div class="col-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                <div class="card">
+                    <h5 class="card-header">散髪</h5>
+                    <div class="card-body">
+                        <h5 class="card-title"><span class="fs-2 fw-bold">22</span>回</h5>
+                        <p class="card-text">最終日は10/14日です</p>
+                        <p class="card-text text-success">18.2% increase since last month</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                <div class="card">
+                    <h5 class="card-header">散髪</h5>
+                    <div class="card-body">
+                        <h5 class="card-title"><span class="fs-2 fw-bold">22</span>回</h5>
+                        <p class="card-text">最終日は10/14です</p>
+                        <p class="card-text text-success">最後に行ってからまだ20日です</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                <div class="card">
+                    <h5 class="card-header">散髪</h5>
+                    <div class="card-body">
+                        <h5 class="card-title"><span class="fs-2 fw-bold">22</span>回</h5>
+                        <p class="card-text">最終日は10/14です</p>
+                        <p class="card-text text-danger">最後に行ってからもう20日経過しました</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                <div class="card">
+                    <div class="card-header">各月の読書数</div>
+                    <div class="card-body">
+                        <canvas id="mychart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?!= HtmlService.createHtmlOutputFromFile('CreateHtml.js').getContent(); ?>
+    <?!= HtmlService.createHtmlOutputFromFile('js').getContent(); ?>
+    <?!= HtmlService.createHtmlOutputFromFile('css').getContent(); ?>
+
+    <script>
+        var ctx = document.getElementById('mychart');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['2022/09', '2022/10', '2022/11', '2022/12', '2023/01', '2023/02', '2023/03'],
+                datasets: [{
+                    label: 'Red',
+                    data: [20, 35, 40, 30, 45, 35, 40],
+                    borderColor: '#f88',
+                }],
+            },
+            options: {
+                y: {
+                    min: 0,
+                    max: 60,
+                },
+            },
+        });
+    </script>
+
+</body>
+
+</html>

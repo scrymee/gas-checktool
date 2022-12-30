@@ -1,0 +1,143 @@
+<script>
+  /**
+  * ===============================
+  *
+  * カレンダー情報を登録するクラス
+  *
+  * ===============================
+  * @param string $text カレンダー検索対象の文字
+  * @param string $startDate 開始日時（yyyy/mm/dd 00:00:00)
+  * @param string $endDate 終了日時(yyyy/mm/dd 00:00:00)
+  */
+  class Card {
+
+    constructor(size, header) {
+      if (size != 'col-6' && size != 'col-12') {
+        throw '[input Error] サイズ指定が不適切な値になっている';
+      }
+      const div = document.createElement('div');
+      div.classList.add(size, 'col-md-6', 'col-lg-3', 'mb-4', 'mx-lg-0')
+      this.div = div;
+
+      const card = document.createElement('div');
+      card.classList.add('card')
+      this.card = card;
+
+      const cardHeader = document.createElement('h5');
+      cardHeader.classList.add('card-header');
+      cardHeader.innerText = header;
+      this.card.appendChild(cardHeader);
+
+      const cardBody = document.createElement('div');
+      cardBody.classList.add('card-body')
+      this.cardBody = cardBody;
+
+    }
+
+    setCount(count, counterWord) {
+      const cardTitle = document.createElement('h5');
+      cardTitle.classList.add('card-title')
+      cardTitle.innerHTML = '<span class="fs-2 fw-bold">' + count + '</span>' + counterWord;
+      this.cardBody.appendChild(cardTitle);
+      return;
+    }
+
+    setText(text, colorOption) {
+      if (colorOption != 'text-success' && colorOption != 'text-danger' && colorOption != undefined) {
+        console.log(option)
+        throw 'CARDTEXT-OPTION-ERRROR'
+      }
+      const cardText = document.createElement('p');
+      cardText.classList.add('card-text', colorOption)
+      cardText.innerText = text;
+      this.cardBody.appendChild(cardText);
+      return;
+    }
+
+    createHtml() {
+      this.card.appendChild(this.cardBody);
+      console.log(this.card);
+      console.log(this.div);
+      this.div.appendChild(this.card);
+      return this.div;
+    }
+  }
+  // console.log(Card.createHtml('col-6', '散髪', '22', '回', '最後に行ってから１０日立ちました', 'もっと行きましょう'));
+  // const a = Card.createHtml('col-6', '散髪', '22', '回', '最後に行ってから１０日立ちました', 'もっと行きましょう');
+
+  const b = new Card('col-6', '散髪');
+  b.setText('aaaaa');
+  b.setText('aaaaa', 'text-success');
+  b.setCount('55', '個');
+  document.getElementById('content').appendChild(b.createHtml())
+  // class Card {
+
+  //   constructor(size, header) {
+  //     if (size != 'col-6' && size != 'col-12') {
+  //       throw '[input Error] サイズ指定が不適切な値になっている';
+  //     }
+  //     const div = document.createElement('div');
+  //     div.classList.add(size, 'col-md-6', 'col-lg-3', 'mb-4', 'mb-lg-0')
+  //     const card = document.createElement('div');
+  //     card.classList.add('card')
+
+  //     const cardHeader = document.createElement('h5');
+  //     cardHeader.classList.add('card-header');
+  //     cardHeader.innerText = header;
+
+  //     const cardBody = document.createElement('div');
+  //     cardBody.classList.add('card-body')
+
+  //   }
+
+  //   static _createTextEl(cardMsg, option) {
+  //     if (option != 'text-success' && option != 'text-danger' && option != undefined) {
+  //       console.log(option)
+  //       throw 'CARDTEXT-OPTION-ERRROR'
+  //     }
+  //     const cardText = document.createElement('p');
+  //     cardText.classList.add('card-text', option)
+  //     cardText.innerText = cardMsg;
+  //     return cardText;
+  //   }
+
+  //   static _createCountEl(count, counterWord) {
+  //     const cardTitle = document.createElement('h5');
+  //     cardTitle.classList.add('card-title')
+  //     cardTitle.innerHTML = '<span class="fs-2 fw-bold">' + count + '</span>' + counterWord;
+  //     return cardTitle;
+  //   }
+
+  //   static createHtml(size, header, count, counterWord, cardMsg, cardMsg2) {
+  //     if (size != 'col-6' && size != 'col-12') {
+  //       throw '[input Error] サイズ指定が不適切な値になっている';
+  //     }
+  //     const div = document.createElement('div');
+  //     div.classList.add(size, 'col-md-6', 'col-lg-3', 'mb-4', 'mb-lg-0')
+  //     const card = document.createElement('div');
+  //     card.classList.add('card')
+
+  //     const cardHeader = document.createElement('h5');
+  //     cardHeader.classList.add('card-header');
+  //     cardHeader.innerText = header;
+
+  //     const cardBody = document.createElement('div');
+  //     cardBody.classList.add('card-body')
+
+  //     const cardText = this._createTextEl(cardMsg);
+  //     const cardTextDesc = this._createTextEl(cardMsg2, 'text-success');
+
+  //     const cardTitle = this._createCountEl(count, counterWord);
+
+  //     cardBody.appendChild(cardTitle);
+  //     cardBody.appendChild(cardText);
+  //     cardBody.appendChild(cardTextDesc);
+
+  //     card.appendChild(cardHeader);
+  //     card.appendChild(cardBody);
+
+  //     div.appendChild(card);
+  //     return div;
+  //   }
+  // }
+</script>

@@ -1,0 +1,93 @@
+<script>
+  // 日付の取得
+  //const today = new Date();
+  //document.getElementById('today').innerText = today.getMonth() + 1 +'/' + today.getDate() + ' ('+[ "日", "月", "火", "水", "木", "金", "土" ][today.getDay()]+')';
+
+
+  const NAME_RELATION = {
+    '散髪': {
+      'id': 'haircut',
+      'cautionDay': '30',
+    },
+    '遊ぶ': {
+      'id': 'enjoy',
+      'cautionDay': '5',
+    },
+    '買い物': {
+      'id': 'other',
+      'cautionDay': '99',
+    },
+    'サウナ': {
+      'id': 'hotspring',
+      'cautionDay': '10',
+    }
+  };
+
+  /** *********************
+   * 
+   * 最初の読み込みによる実行
+   * 
+  ********************* */
+  // NAME RELATIONのkey名に紐づくデータをカレンダーから取得して更新する
+  Object.keys(NAME_RELATION).forEach((index) => {
+    getFromCalender(index);
+  })
+
+
+  /**
+   * 
+   * 画面更新処理
+   * 
+  */
+  function update(r) {
+    // ----------------------------
+    // 戻り値の取得
+    //-----------------------------
+    const res = JSON.parse(r);
+    const NAME = res.name;
+    console.log(res);
+    let aa = new Card('col-6', res.name);
+    aa.setText('最終アクセス：' + res.date);
+    aa.setText('aaaaa', 'text-success');
+    aa.setCount('55', '個');
+    document.getElementById('content').appendChild(aa.createHtml())
+
+
+
+  }
+  /** *********************
+   * 
+   * textを持つカレンダーを取得する処理=> 完了するとscriptのupdate関数を実行する
+   * 
+  ********************* */
+  function getFromCalender(text) {
+    console.log(text);
+    google.script.run.
+      withSuccessHandler(update)
+      .getLastEvent(text);
+  }
+
+  /** *********************
+   * 
+   * textを持つカレンダーを取得する処理=> 完了するとscriptのupdate関数を実行する
+   * 
+  ********************* */
+  function getAllFromCalender() {
+    console.log(text);
+    google.script.run.
+      withSuccessHandler(update)
+      .getLastEvent(text);
+  }
+
+
+  /** *********************
+   * 
+   * textの値を登録する処理 => 完了するとscriptのupdate関数を実行する
+   * 
+  ********************* */
+  function regist(text) {
+    google.script.run
+      .withSuccessHandler(update)
+      .createCalendar(text);
+  }
+</script>
