@@ -46,11 +46,11 @@
     const res = JSON.parse(r);
     const NAME = res.name;
     console.log(res);
-    let aa = new Card('col-6', res.name);
-    aa.setText('最終アクセス：' + res.date);
-    aa.setText('aaaaa', 'text-success');
-    aa.setCount('55', '個');
-    document.getElementById('content').appendChild(aa.createHtml())
+    const card = new Card('col-6', res.name, 'content');
+    card.setCount('55', '個');
+    card.setText('最終日は' + res.lastDate + 'です');
+    card.setText('最後に行ってからまだ20日です', 'text-success');
+    card.display()
 
 
 

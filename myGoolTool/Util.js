@@ -21,6 +21,10 @@ function doGet(e) {
     .addMetaTag('viewport', 'width=device-width,initial-scale=1');  // viewportを設定
 }
 
+function ViewComponent(pathName) {
+  return HtmlService.createHtmlOutputFromFile(pathName).getContent();
+}
+
 /**
  * 現在のアプリのURLを返却する
  */

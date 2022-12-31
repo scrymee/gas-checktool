@@ -15,6 +15,9 @@
     <script
         src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
+    <!-- JSクラスの読み込み -->
+    <?!= ViewComponent('CardClass.js') ?>
+    <?!= ViewComponent('css') ?>
 
     <link rel="apple-touch-icon"
         href="https://4.bp.blogspot.com/-1865joK51EI/Wb8gnbhjDpI/AAAAAAABGy4/ByWIh6Zt-hM-CCEzYWBxcuTJOOWz26kYwCLcBGAs/s800/pet_omocha_neko.png" />
@@ -22,82 +25,53 @@
 
 <body>
     <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a
-                        href="https://script.google.com/macros/s/AKfycbxiKtddF1pqZiEWS_1V9sCJ8KoQ7YW1_uevz-b3t_I/dev?pageId=admin">Home</a>
-                </li>
-            </ol>
-        </nav>
         <h1 class="h2">Dashboard</h1>
-        <p>This is the homepage of a simple admin interface which is part of a tutorial written on Themesberg
-            <a href="<?= url ?>/admin">Admin</a>
-            <span data-href="<?= getAppUrl() ?>/admin" onclick="doAdmin()">Admin</a>
-        </p>
-        <div class="row" id="content">
-            <div class="col-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                <div class="card">
-                    <h5 class="card-header">散髪</h5>
-                    <div class="card-body">
-                        <h5 class="card-title"><span class="fs-2 fw-bold">22</span>回</h5>
-                        <p class="card-text">最終日は10/14日です</p>
-                        <p class="card-text text-success">18.2% increase since last month</p>
-                    </div>
-                </div>
+        <p>This is My DashBoard</p>
+
+        <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="font-monospace  nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                    data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+                    aria-selected="true">
+                    HOME
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="font-monospace nav-link" id="pills-admin-tab" data-bs-toggle="pill"
+                    data-bs-target="#pills-admin" type="button" role="tab" aria-controls="pills-admin"
+                    aria-selected="false">
+                    ADMIN
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <?!= ViewComponent('top') ?>
             </div>
-            <div class="col-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                <div class="card">
-                    <h5 class="card-header">散髪</h5>
-                    <div class="card-body">
-                        <h5 class="card-title"><span class="fs-2 fw-bold">22</span>回</h5>
-                        <p class="card-text">最終日は10/14です</p>
-                        <p class="card-text text-success">最後に行ってからまだ20日です</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                <div class="card">
-                    <h5 class="card-header">散髪</h5>
-                    <div class="card-body">
-                        <h5 class="card-title"><span class="fs-2 fw-bold">22</span>回</h5>
-                        <p class="card-text">最終日は10/14です</p>
-                        <p class="card-text text-danger">最後に行ってからもう20日経過しました</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                <div class="card">
-                    <div class="card-header">各月の読書数</div>
-                    <div class="card-body">
-                        <canvas id="mychart"></canvas>
-                    </div>
-                </div>
+            <div class="tab-pane fade" id="pills-admin" role="tabpanel" aria-labelledby="pills-admin-tab">
+                <?!= ViewComponent('admin') ?>
             </div>
         </div>
     </div>
-    <?!= HtmlService.createHtmlOutputFromFile('CreateHtml.js').getContent(); ?>
     <?!= HtmlService.createHtmlOutputFromFile('js').getContent(); ?>
-    <?!= HtmlService.createHtmlOutputFromFile('css').getContent(); ?>
 
     <script>
-        var ctx = document.getElementById('mychart');
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['2022/09', '2022/10', '2022/11', '2022/12', '2023/01', '2023/02', '2023/03'],
-                datasets: [{
-                    label: 'Red',
-                    data: [20, 35, 40, 30, 45, 35, 40],
-                    borderColor: '#f88',
-                }],
-            },
-            options: {
-                y: {
-                    min: 0,
-                    max: 60,
-                },
-            },
-        });
+        const b = new Card('col-6', '散髪', 'content');
+        b.setText('* 安全なウェブアプリケーションの作り方');
+        b.setText('* テスト駆動開発');
+        b.setText('aaaaa', 'text-success');
+        b.setCount('55', '個');
+        b.display();
+
+        const d = new Card('col-12', 'グラフ2', 'content');
+        d.setText('aaaaa');
+        d.setGraph('mychart2'
+            , ['2022/09', '2022/10', '2022/11', '2022/12', '2023/01', '2023/02', '2023/03']
+            , [[20, 35, 40, 30, 45, 35, 40]]
+            , 60);
+        d.setText('aaaaa', 'text-success');
+        d.setCount('55', '個');
+        d.display();
     </script>
 
 </body>
