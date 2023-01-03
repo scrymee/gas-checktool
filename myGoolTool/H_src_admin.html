@@ -68,30 +68,30 @@
     <!-- INPUT END -->
     <!-- INPUT START -->
     <div class="accordion-item">
-      <h2 class="accordion-header" id="headingThree">
+      <h2 class="accordion-header" id="haircut-header">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-          data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          data-bs-target="#collapse-haircut" aria-expanded="false" aria-controls="collapse-haircut">
           散髪 #3
         </button>
       </h2>
-      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+      <div id="collapse-haircut" class="accordion-collapse collapse" aria-labelledby="haircut-header"
         data-bs-parent="#accordionExample">
         <div class="accordion-body">
           <div class="mb-3">
             <div class="form-floating">
-              <input type="datetime-local" class="form-select" id="floatingSelect3">
-              <label for="floatingSelect3">開始日</label>
+              <input type="datetime-local" class="form-select" id="haircut-starttime" value="2022-12-31T19:30">
+              <label for="haircut-starttime">開始日</label>
             </div>
           </div>
           <div class="mb-3">
             <div class="form-floating">
-              <input type="datetime-local" class="form-select" id="floatingSelect3-endtime">
-              <label for="floatingSelect3-endtime">終了日</label>
+              <input type="datetime-local" class="form-select" id="haircut-endtime" value="2022-12-31T20:30">
+              <label for="haircut-endtime">終了日</label>
             </div>
           </div>
           <div class="mb-3">
             <div class="d-grid gap-2 col-6 mx-auto">
-              <button class="btn btn-primary" type="button">登録！</button>
+              <button class="btn btn-primary" type="button" id="haircut-btn">登録！</button>
             </div>
           </div>
         </div>
@@ -149,5 +149,15 @@
     </div>
     <!-- INPUT END -->
   </div>
-
 </div>
+
+<script>
+  // const haircut = new AdminDashBoard('haircut');
+  // haircut.setStartTime();
+  // haircut.setEndTime();
+  // let label = '遊んだ内容';
+  // let option = ['a', 'b'];
+  // haircut.setSelectBox(label, option);
+  // haircut.setButton();
+
+</script>

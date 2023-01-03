@@ -16,7 +16,9 @@
         src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
     <!-- JSクラスの読み込み -->
-    <?!= ViewComponent('CardClass.js') ?>
+    <?!= ViewComponent('H_Js_Class_Card') ?>
+    <?!= ViewComponent('H_Js_Class_Common_Date') ?>
+    <?!= ViewComponent('H_Js_Class_AdminDashBoard') ?>
     <?!= ViewComponent('css') ?>
 
     <link rel="apple-touch-icon"
@@ -46,24 +48,30 @@
         </ul>
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                <?!= ViewComponent('top') ?>
+                <?!= ViewComponent('H_src_top') ?>
             </div>
             <div class="tab-pane fade" id="pills-admin" role="tabpanel" aria-labelledby="pills-admin-tab">
-                <?!= ViewComponent('admin') ?>
+                <?!= ViewComponent('H_src_admin') ?>
             </div>
         </div>
     </div>
-    <?!= HtmlService.createHtmlOutputFromFile('js').getContent(); ?>
+    <?!= HtmlService.createHtmlOutputFromFile('H_Js_main').getContent(); ?>
 
     <script>
-        const b = new Card('col-6', '散髪', 'content');
-        b.setText('* 安全なウェブアプリケーションの作り方');
-        b.setText('* テスト駆動開発');
-        b.setText('aaaaa', 'text-success');
-        b.setCount('55', '個');
-        b.display();
+        // const b = new Card('col-6', '散髪', 'content');
+        // b.setText('* 安全なウェブアプリケーションの作り方');
+        // b.setText('* テスト駆動開発');
+        // b.setText('aaaaa', 'text-success');
+        // b.setCount('55', '個');
+        // b.display();
+        const a = Common_Date.convertFromLocalTime('2022-12-31T19:30')
+        console.log(a)
+        const b = Common_Date.convertToLocalTime('2022-12-31 10:00:00')
+        console.log(b)
 
-        const d = new Card('col-12', 'グラフ2', 'content');
+
+
+        const d = new BigCard('グラフ2');
         d.setText('aaaaa');
         d.setGraph('mychart2'
             , ['2022/09', '2022/10', '2022/11', '2022/12', '2023/01', '2023/02', '2023/03']

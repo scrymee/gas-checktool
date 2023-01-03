@@ -1,0 +1,102 @@
+<script>
+  /**
+   * ===============================
+   * 
+   * 戻り値からHTMLを返却するクラス
+   * 
+   * ===============================
+   * @param string $text カレンダー検索対象の文字
+   * @param string $startDate 開始日時（yyyy/mm/dd 00:00:00)
+   * @param string $endDate 終了日時(yyyy/mm/dd 00:00:00)
+   */
+  class AdminDashBoard {
+
+    constructor(size, header, contentId) {
+      if (size != 'col-6' && size != 'col-12') {
+        throw '[input Error] サイズ指定が不適切な値になっている';
+      }
+      const div = document.createElement('div');
+      div.classList.add(size, 'col-md-6', 'col-lg-3', 'mb-4', 'mx-lg-0')
+      this.div = div;
+
+      const card = document.createElement('div');
+      card.classList.add('card')
+      this.card = card;
+
+      const cardHeader = document.createElement('h5');
+      cardHeader.classList.add('card-header');
+      cardHeader.innerText = header;
+      this.card.appendChild(cardHeader);
+
+      const cardBody = document.createElement('div');
+      cardBody.classList.add('card-body')
+      this.cardBody = cardBody;
+
+      this.CONTENTSID = contentId;
+    }
+
+    setCount(count, counterWord) {
+      const cardTitle = document.createElement('h5');
+      cardTitle.classList.add('card-title')
+      cardTitle.innerHTML = '<span class="fs-2 fw-bold">' + count + '</span>' + counterWord;
+      this.cardBody.appendChild(cardTitle);
+      return;
+    }
+
+    setText(text, colorOption) {
+      if (colorOption != 'text-success' && colorOption != 'text-danger' && colorOption != undefined) {
+        console.log(option)
+        throw 'CARDTEXT-OPTION-ERRROR'
+      }
+      const cardText = document.createElement('p');
+      cardText.classList.add('card-text', colorOption)
+      cardText.innerText = text;
+      this.cardBody.appendChild(cardText);
+      return;
+    }
+    setGraph(id, dataLabel, data, min) {
+      this.graphID = id
+      this.graphDataLabel = dataLabel
+      this.graphData = data;
+      const graph = document.createElement('canvas');
+      graph.setAttribute('id', this.graphID);
+      this.cardBody.appendChild(graph)
+      return;
+    }
+
+    createHtml() {
+      this.card.appendChild(this.cardBody);
+      this.div.appendChild(this.card);
+      return this.div;
+    }
+
+    display() {
+      document.getElementById(this.CONTENTSID).appendChild(this.createHtml())
+      console.log(this.graphID);
+      if (!this.graphID) {
+        return
+      }
+
+      var ctx = document.getElementById(this.graphID);
+      console.log(ctx);
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['2022/09', '2022/10', '2022/11', '2022/12', '2023/01', '2023/02', '2023/03'],
+          datasets: [{
+            label: 'Red',
+            data: [20, 35, 40, 30, 45, 35, 40],
+            borderColor: '#f88',
+          }],
+        },
+        options: {
+          y: {
+            min: 0,
+            max: 60,
+          },
+        },
+      });
+      return;
+    }
+  }
+</script>

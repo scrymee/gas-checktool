@@ -7,25 +7,26 @@
  * 
  * ===============================
  */
-class GetCalender {
+class Calender {
   /**
    * 
    * @param string $text カレンダー検索対象の文字
    * @param string $startDate 開始日時（含む）
    * @param string $endDate 終了日時（含む）
    */
-  constructor(startDate, endDate, text) {
+  // constructor(startDate, endDate, text) {
+  constructor(text, startDate, endDate) {
     //------------------
     // Dateオブジェクトに変換
     //------------------
-    if (typeof (text) != 'string' || typeof (startDate) != 'string' || typeof (endDate) != 'string') {
+    if (typeof (text) != 'string') {
       throw new TypeError('Error');
     }
     this.text = text;
-    this.startDate = new Date(startDate + ' 00:00:00');
-    this.endDate = new Date(endDate + ' 23:59:59');
-
-    this.calendar = CalendarApp.getCalendarById(CALENDER_ID)
+    if (startDate != undefined && endDate != undefined) {
+      this.startDate = new Date(startDate + ' 00:00:00');
+      this.endDate = new Date(endDate + ' 23:59:59');
+    }
   }
 
   /**
@@ -49,7 +50,12 @@ class GetCalender {
    * 指定日から指定日までの「部分一致の」全イベントを取得する
    * @return void
    */
-  main() {
+  get() {
+    if (typeof (this.startDate) != 'object' || typeof (this.endDate) != 'object') {
+      throw new TypeError('Error');
+    }
+
+    this.calendar = CalendarApp.getCalendarById(CALENDER_ID)
     let ret = [];
     for (let event of this.allEvents()) {
       // 指定された文字列がタイトルに含まれていなければ後続の処理を行わない
@@ -63,7 +69,11 @@ class GetCalender {
    * @return void
    */
   lastDate() {
-    const events = this.main()
+    if (typeof (this.startDate) != 'object' || typeof (this.endDate) != 'object') {
+      throw new TypeError('Error');
+    }
+
+    const events = this.get()
     const startObj = events[events.length - 1].getStartTime();
     return Common_Date.getStr(startObj)
   }
@@ -73,6 +83,23 @@ class GetCalender {
     * @return void
     */
   count() {
-    return this.main().length;
+    if (typeof (this.startDate) != 'object' || typeof (this.endDate) != 'object') {
+      throw new TypeError('Error');
+    }
+    return this.get().length;
+  }
+  /**
+   * 散髪ボタンをクリックしたときに呼び出す関数
+   * 開始日の時間から、その１時間で散髪予定を入れる
+  */
+  save(text, startDate, endDate) {
+    if (typeof (startDate) != 'object' || typeof (endDate) != 'object') {
+      throw new TypeError('Error');
+    }
+    this.calendar.createEvent(text, startDate, endDate);
+    const res = {
+      name: text,
+    }
+    return JSON.stringify(res)
   }
 }

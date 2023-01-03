@@ -2,34 +2,17 @@
  * URLにアクセスしたときに表示するhtmlファイル名
  */
 
-function doGet(e) {
-  // URLのexec/(またはdev/)以降を取得
-  const page = e.pathInfo ? e.pathInfo : "index"
-  // 該当するテンプレートを取得する
-  const template = (() => {
-    try {
-      return HtmlService.createTemplateFromFile(page);
-    } catch (e) {
-      return HtmlService.createTemplateFromFile("error");
-    }
-  })();
-
-  // htmlを返す
-  template.url = ScriptApp.getService().getUrl();   // テンプレートにアプリのURLを渡す
-  return template.evaluate()                        // テンプレートを評価してhtmlを返す
-    .setTitle("テストサイト")                           // タイトルをセット
-    .addMetaTag('viewport', 'width=device-width,initial-scale=1');  // viewportを設定
+function doGet() {
+  var htmlOutput = HtmlService.createTemplateFromFile("index").evaluate();
+  htmlOutput
+    .setTitle('DashBoard')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+  return htmlOutput;
 }
+
 
 function ViewComponent(pathName) {
   return HtmlService.createHtmlOutputFromFile(pathName).getContent();
-}
-
-/**
- * 現在のアプリのURLを返却する
- */
-function getAppUrl() {
-  return ScriptApp.getService().getUrl();
 }
 
 /**
@@ -60,7 +43,6 @@ class Common_Date {
     if (typeof (date) == 'undefined') {
       throw new TypeError('Error');
     }
-    console.log('A');
     return this.getYear(date) + '/' + this.getMonth(date) + '/' + this.getDay(date)
   }
   /**
@@ -89,6 +71,24 @@ class Common_Date {
 
   static checkTime(startDate, endDate) {
     return new Date(startDate) < new Date(endDate)
+  }
+
+  static checkOverFromNow(targetDate, cautionDay) {
+    const passedDay = Common_Date.passedDay(targetDate)
+    if (passedDay > cautionDay) {
+      return true
+    }
+    return false
+  }
+
+  static convertDateLocalFormat(date) {
+    return date.replace(/T/g, '-')
+  }
+
+  static passedDay(targetDate) {
+    const passedTime = (new Date() - new Date(targetDate)) / 86400000;
+    const passedDay = Math.floor(passedTime)
+    return (passedDay > 0) ? passedDay : 0
   }
 }
 
