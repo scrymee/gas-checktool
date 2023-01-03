@@ -45,7 +45,6 @@
 
     setText(text, colorOption) {
       if (colorOption != 'text-success' && colorOption != 'text-danger' && colorOption != undefined) {
-        console.log(option)
         throw 'CARDTEXT-OPTION-ERRROR'
       }
       const cardText = document.createElement('p');
@@ -72,13 +71,11 @@
 
     display() {
       document.getElementById(this.CONTENTSID).appendChild(this.createHtml())
-      console.log(this.graphID);
       if (!this.graphID) {
         return
       }
 
       var ctx = document.getElementById(this.graphID);
-      console.log(ctx);
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {

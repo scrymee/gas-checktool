@@ -67,7 +67,7 @@
     </div>
     <!-- INPUT END -->
     <!-- INPUT START -->
-    <div class="accordion-item">
+    <!-- <div class="accordion-item">
       <h2 class="accordion-header" id="haircut-header">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
           data-bs-target="#collapse-haircut" aria-expanded="false" aria-controls="collapse-haircut">
@@ -96,10 +96,10 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- INPUT END -->
     <!-- INPUT START -->
-    <div class="accordion-item">
+    <!-- <div class="accordion-item">
       <h2 class="accordion-header" id="heading4">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4"
           aria-expanded="false" aria-controls="collapse4">
@@ -116,7 +116,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- INPUT END -->
     <!-- INPUT START -->
     <div class="accordion-item">
@@ -152,8 +152,38 @@
 </div>
 
 <script>
+  const book = new AdminDashBoard('reading', '本');
+  book.setTextBox('0', '読んだ本')
+  book.setDateTime()
+  book.setButton()
+  book.display()
+
+  const sauna = new AdminDashBoard('sauna', 'サウナ');
+  sauna.setDateTime()
+  sauna.setButton()
+  sauna.display()
+
   const haircut = new AdminDashBoard('haircut', '散髪');
+  haircut.setDateTime()
+  haircut.setButton()
   haircut.display()
+
+
+  google.script.run.
+    withSuccessHandler(setSelect)
+    .getAll100List();
+
+  function setSelect(r) {
+    const lists = JSON.parse(r);
+    console.log(lists)
+    const list100 = new AdminDashBoard('list100', 'やりたいこと100リスト');
+    list100.setDateTime()
+    list100.setSelectBox('リスト選択', lists)
+    list100.setButton()
+    list100.display()
+
+  }
+
   // haircut.setTime();
   // let label = '遊んだ内容';
   // let option = ['a', 'b'];

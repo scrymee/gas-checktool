@@ -34,6 +34,21 @@
       }
       return this.getYear(date) + '/' + this.getMonth(date) + '/' + this.getDay(date)
     }
+    static getStrYmdHi(date) {
+      if (typeof (date) == 'undefined') {
+        throw new TypeError('Error');
+      }
+      date = new Date(date)
+      const dateTime = Common_Date.getStr(date)
+      let hours = date.getHours();
+      let minutes = date.getMinutes();
+      return dateTime + ' ' + hours + ':' + minutes
+    }
+
+    static getNowYmdHi() {
+      return Common_Date.getStrYmdHi(new Date());
+    }
+
     /**
      * 月初の取得
      * @return string
@@ -54,9 +69,9 @@
     hour にはマイナスも指定可能
     */
     static calcHour(date, hour) {
-      var now = new Date(date);
-      now.setHours(now.getHours() + hour);
-      return Common_Date.getStr(date);
+      var res = new Date(date);
+      res.setHours(res.getHours() + parseInt(hour));
+      return Common_Date.getStrYmdHi(res);
     }
     /*
     dayにはマイナスも指定可能

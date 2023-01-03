@@ -55,6 +55,14 @@ class List100Sheet extends SpreedSheet {
   constructor() {
     super('100リスト')
   }
+  getAllTitleArr() {
+    const start = 2;
+    let ret = [];
+    for (let i = start; i <= this.getLastRow(); i++) {
+      ret.push(this.getTitle(i))
+    }
+    return ret
+  }
   getTitle(num) {
     //B2とかを指定する
     return super.getCell('B' + num)
@@ -92,8 +100,3 @@ class GoalSheet extends SpreedSheet {
     return super.getCell('C' + num) ? true : false;
   }
 }
-function test() {
-  console.log(new GoalSheet().getTitle('2'))
-  console.log(new GoalSheet().check('2', '2022-12-31'))
-}
-

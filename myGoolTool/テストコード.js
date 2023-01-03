@@ -1,13 +1,21 @@
+function リスト100を取得する() {
+  console.log(getAll100List())
+}
 
 
 function set2() {
   text = '遊ぶ'
-  startDate = Common_Date.convertDateLocalFormat('2022/12/31T12:00');
-  startDate = Common_Date.convertDateLocalFormat('2022/12/31T13:00');
+  startDate = Common_Date.convertFromLocalTime('2022/12/31T12:00');
+  endDate = Common_Date.convertFromLocalTime('2022/12/31T13:00');
   console.log(startDate)
   const a = new Calender(text)
   a.save(startDate, endDate)
 }
+function test() {
+  console.log(new GoalSheet().getTitle('2'))
+  console.log(new GoalSheet().check('2', '2022-12-31'))
+}
+
 
 function testGetLastEvent() {
   // const set = new Calender('2022/12/29 22:00:00', '2022/12/29 23:00:00', '遊ぶよ')

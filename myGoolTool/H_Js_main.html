@@ -46,7 +46,6 @@
     //-----------------------------
     const res = JSON.parse(r);
     const NAME = res.name;
-    console.log(res);
     const card = new SmallCard(res.name);
     card.setCount(res.count, '個');
     card.setText('最終日は' + res.lastDate + 'です');
@@ -63,8 +62,6 @@
    * 
   ********************* */
   function getFromCalender(text) {
-    console.log(text);
-    console.log(Common_Date.calcDay(Common_Date.getNow(), '-60'))
     google.script.run.
       withSuccessHandler(updateCard)
       .getLastEvent(text, Common_Date.calcDay(Common_Date.getNow(), '-60'), Common_Date.getNow());
@@ -76,29 +73,13 @@
    * 
   ********************* */
   function getAllFromCalender() {
-    console.log(text);
     google.script.run.
       withSuccessHandler(updateCard)
       .getLastEvent(text);
   }
 
 
-  /** *********************
-   * 
-   * textの値を登録する処理 => 完了するとscriptのupdate関数を実行する
-   * 
-  ********************* */
-  function regist(text, startDate, endDate) {
-    google.script.run
-      .withSuccessHandler(update)
-      .setCalenderData(text, startDate, endDate);
-  }
 
-  document.getElementById('haircut-btn').addEventListener('click', () => {
-    const startDate = document.getElementById('haircut-starttime').value;
-    const endDate = document.getElementById('haircut-endtime').value;
-    regist('散髪', startDate, endDate)
-  })
   /** *********************
    * 
    * textの値を登録する処理 => 完了するとscriptのupdate関数を実行する

@@ -27,6 +27,7 @@ class Calender {
       this.startDate = new Date(startDate + ' 00:00:00');
       this.endDate = new Date(endDate + ' 23:59:59');
     }
+    this.calendar = CalendarApp.getCalendarById(CALENDER_ID)
   }
 
   /**
@@ -55,7 +56,6 @@ class Calender {
       throw new TypeError('Error');
     }
 
-    this.calendar = CalendarApp.getCalendarById(CALENDER_ID)
     let ret = [];
     for (let event of this.allEvents()) {
       // 指定された文字列がタイトルに含まれていなければ後続の処理を行わない
@@ -92,13 +92,15 @@ class Calender {
    * 散髪ボタンをクリックしたときに呼び出す関数
    * 開始日の時間から、その１時間で散髪予定を入れる
   */
-  save(text, startDate, endDate) {
+  save(startDate, endDate) {
+    startDate = new Date(startDate)
+    endDate = new Date(endDate)
     if (typeof (startDate) != 'object' || typeof (endDate) != 'object') {
       throw new TypeError('Error');
     }
-    this.calendar.createEvent(text, startDate, endDate);
+    this.calendar.createEvent(this.text, startDate, endDate);
     const res = {
-      name: text,
+      name: this.text,
     }
     return JSON.stringify(res)
   }

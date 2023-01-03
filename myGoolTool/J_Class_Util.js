@@ -15,15 +15,6 @@ function ViewComponent(pathName) {
   return HtmlService.createHtmlOutputFromFile(pathName).getContent();
 }
 
-/**
- * ===============================
- * 
- * 
- * 日付クラス
- * 
- * 
- * ===============================
- */
 class Common_Date {
 
   static getYear(date) {
@@ -39,12 +30,32 @@ class Common_Date {
   * 曜日の文字列を返却
   * @return string
   */
+
+  static getNow() {
+    return Common_Date.getStr(new Date());
+  }
+
   static getStr(date) {
     if (typeof (date) == 'undefined') {
       throw new TypeError('Error');
     }
     return this.getYear(date) + '/' + this.getMonth(date) + '/' + this.getDay(date)
   }
+  static getStrYmdHi(date) {
+    if (typeof (date) == 'undefined') {
+      throw new TypeError('Error');
+    }
+    date = new Date(date)
+    const dateTime = Common_Date.getStr(date)
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    return dateTime + ' ' + hours + ':' + minutes
+  }
+
+  static getNowYmdHi() {
+    return Common_Date.getStrYmdHi(new Date());
+  }
+
   /**
    * 月初の取得
    * @return string
@@ -61,12 +72,21 @@ class Common_Date {
     return Common_Date.getStr(lastDate);
   }
 
-  static calcHourDate(date, hour) {
-    var now = new Date(date);
-    now.setHours(now.getHours() + hour);
-    return Common_Date.getStr(date);
-    console.log(now.toLocaleString());
-    console.log(an_hour_ago.toLocaleString());
+  /*
+  hour にはマイナスも指定可能
+  */
+  static calcHour(date, hour) {
+    var res = new Date(date);
+    res.setHours(res.getHours() + parseInt(hour));
+    return Common_Date.getStrYmdHi(res);
+  }
+  /*
+  dayにはマイナスも指定可能
+  */
+  static calcDay(date, day) {
+    date = new Date(date);
+    const res = new Date(date.getTime() + Number(day) * 24 * 60 * 60 * 1000);
+    return Common_Date.getStr(res)
   }
 
   static checkTime(startDate, endDate) {
@@ -81,8 +101,15 @@ class Common_Date {
     return false
   }
 
-  static convertDateLocalFormat(date) {
-    return date.replace(/T/g, '-')
+  static convertFromLocalTime(date) {
+    return date.replace(/T/g, ' ')
+  }
+  // 値をdatetime-localで定義し直す
+  static convertToLocalTime(d) {
+    d = new Date(d);
+    const shift = d.getTime() + 9 * 60 * 60 * 1000;
+    const time = new Date(shift).toISOString().split('.')[0];
+    return time;
   }
 
   static passedDay(targetDate) {

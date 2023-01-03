@@ -1,4 +1,8 @@
 <script>
+
+  function update() {
+    alert('更新しました')
+  }
   /**
    * ===============================
    * 
@@ -12,90 +16,203 @@
   class AdminDashBoard {
 
 
-    constructor(uniqueName, Title) {
+    static START_ID = '-starttime'
+    static END_ID = '-endtime'
+    static BTN_ID = '-btn'
+    static INPUT_ID = '-input'
+    static SELECT_ID = '-select'
+
+    constructor(uniqueID, Name) {
       const ID = 'accordionExample'
       this.ID = ID;
       const Parent = '#' + ID
+      this.uniqueID = uniqueID
+      this.Name = Name
 
+      // アコーディオンのベースを作成
       const div = document.createElement('div');
-      div.classList.add('according-item')
+      div.classList.add('accordion-item')
       this.AdminDiv = div;
 
+      // アコーディオンのヘッダー作成
       const header = document.createElement('h2');
       header.classList.add('accordion-header')
-      header.setAttribute('id', uniqueName)
+      header.setAttribute('id', this.uniqueID)
 
       const headerContent = document.createElement('button');
       headerContent.classList.add('accordion-button', 'collapsed')
       headerContent.setAttribute('type', 'button')
       headerContent.setAttribute('data-bs-toggle', 'collapse')
-      headerContent.setAttribute('data-bs-target', '#collaspe' + uniqueName)
-      headerContent.setAttribute('area-expanded', 'false')
-      headerContent.setAttribute('area-controls', '#collaspe' + uniqueName)
-      headerContent.innerText = Title
+      headerContent.setAttribute('data-bs-target', '#collapse-' + this.uniqueID)
+      headerContent.setAttribute('aria-expanded', 'false')
+      headerContent.setAttribute('aria-controls', this.uniqueID)
+      headerContent.innerText = this.Name
       header.appendChild(headerContent);
       this.header = header;
 
+      // アコーディオンのボディ作成
+      const AdminBody = document.createElement('div');
+      AdminBody.setAttribute('id', 'collapse-' + this.uniqueID)
+      AdminBody.classList.add('accordion-collapse', 'collapse')
+      AdminBody.setAttribute('aria-labelledby', this.uniqueID)
+      AdminBody.setAttribute('data-bs-parent', Parent)
+      this.AdminBody = AdminBody
+
+      // ボディの中身作成
       const body = document.createElement('div');
-      body.classList.add('accordion-collapse', 'collapse')
-      body.setAttribute('id', 'collapse' + uniqueName)
-      body.setAttribute('aria-labelledby', uniqueName)
-      body.setAttribute('data-bs-parent', Parent)
-
-
-      const bodyContent = document.createElement('div');
-      bodyContent.classList.add('accordion-body')
-      body.appendChild(bodyContent);
+      body.classList.add('accordion-body')
+      this.body = body
 
 
 
-      this.AdminBody = body;
-
-
-      //   <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5"
-      //     data-bs-parent="#accordionExample">
-      //     <div class="accordion-body">
-      //       <div class="mb-3">
-      //         <div class="form-floating">
-      //           <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-      //             <option selected>未設定</option>
-      //             <option value="1">飲み会</option>
-      //             <option value="2">趣味</option>
-      //             <option value="3">食事</option>
-      //             <option value="4">観光</option>
-      //           </select>
-      //           <label for="floatingSelect">遊んだ目的</label>
-      //         </div>
-      //       </div>
-      //       <div class="d-grid gap-2 col-6 mx-auto">
-      //         <button class="btn btn-primary" type="button">登録！</button>
-      //       </div>
-      //     </div>
-      //   </div>
-      // </div >
-      // <!--INPUT END-- >
     }
 
-    display() {
-      this.AdminDiv.appendChild(this.header)
-      this.AdminDiv.appendChild(this.AdminBody)
-      document.getElementById(this.ID).appendChild(this.AdminDiv);
-    }
+    setTextBox(num, labelName) {
+      const div = document.createElement('div')
+      div.classList.add('mb-3')
 
-    setGraph(id, dataLabel, data, min) {
-      this.graphID = id
-      this.graphDataLabel = dataLabel
-      this.graphData = data;
-      const graph = document.createElement('canvas');
-      graph.setAttribute('id', this.graphID);
-      this.cardBody.appendChild(graph)
+      const label = document.createElement('label');
+      label.classList.add('form-label');
+      const formControl = 'formControl-' + this.uniqueID
+      label.setAttribute('for', formControl)
+      label.innerText = labelName
+
+      const input = document.createElement('input');
+      input.classList.add('form-control');
+      input.setAttribute('type', 'text')
+      input.setAttribute('id', this.uniqueID + num + AdminDashBoard.INPUT_ID)
+
+      div.appendChild(label);
+      div.appendChild(input);
+
+      this.body.appendChild(div)
+
+      this.isTextBox = true;
       return;
     }
 
-    createHtml() {
-      this.card.appendChild(this.cardBody);
-      this.div.appendChild(this.card);
-      return this.div;
+    display() {
+      this.AdminBody.appendChild(this.body);
+      this.AdminDiv.appendChild(this.header)
+      this.AdminDiv.appendChild(this.AdminBody)
+      document.getElementById(this.ID).appendChild(this.AdminDiv);
+
+
+      //  クリックイベントを登録
+      document.getElementById(this.uniqueID + AdminDashBoard.BTN_ID).addEventListener('click', () => {
+        let startDate = document.getElementById(this.uniqueID + AdminDashBoard.START_ID).value;
+        let endDate = document.getElementById(this.uniqueID + AdminDashBoard.END_ID).value;
+        startDate = Common_Date.convertFromLocalTime(startDate)
+        endDate = Common_Date.convertFromLocalTime(endDate)
+        // 文字列などを保存する
+        let msg = this.Name
+        if (this.isTextBox) {
+          msg = document.getElementById(this.uniqueID + '0' + AdminDashBoard.INPUT_ID).value
+          console.log(msg);
+        }
+        this.regist(msg, startDate, endDate)
+      })
+    }
+
+    setButton() {
+      const button = document.createElement('button')
+      button.classList.add('btn', 'btn-primary')
+      button.setAttribute('type', 'button')
+      button.setAttribute('id', this.uniqueID + AdminDashBoard.BTN_ID)
+      button.innerText = '登録'
+      const content = document.createElement('div');
+      content.classList.add('d-grid', 'gap-2', 'col-6', 'mx-auto')
+      console.log(content)
+      content.appendChild(button)
+
+      const div = document.createElement('div')
+      div.classList.add('mb-3')
+      div.appendChild(content);
+
+      this.body.appendChild(div)
+
+      return
+    }
+
+    setDateTime() {
+      const now = Common_Date.getNowYmdHi()
+      const start = Common_Date.calcHour(now, '-2')
+      const end = now
+      const startDiv = this.createDateTime(this.uniqueID + AdminDashBoard.START_ID, '開始日', start);
+      const endDiv = this.createDateTime(this.uniqueID + AdminDashBoard.END_ID, '終了日', end);
+      this.body.appendChild(startDiv)
+      this.body.appendChild(endDiv)
+    }
+
+    createDateTime(id, labelName, time) {
+      const div = document.createElement('div')
+      div.classList.add('mb-3')
+      const form = document.createElement('form')
+      form.classList.add('form-floating')
+
+      const input = document.createElement('input')
+      input.classList.add('form-select')
+      input.setAttribute('id', id)
+      input.setAttribute('type', 'datetime-local')
+      input.setAttribute('value', Common_Date.convertToLocalTime(time))
+
+      const label = document.createElement('label');
+      label.setAttribute('for', id);
+      label.innerText = labelName
+
+      form.appendChild(input)
+      form.appendChild(label)
+      div.appendChild(form)
+      return div;
+    }
+
+
+    setSelectBox(labelName, lists) {
+      const selectId = this.uniqueID + AdminDashBoard.SELECT_ID;
+      const div = document.createElement('div')
+      div.classList.add('mb-3')
+
+      const form = document.createElement('form')
+      form.classList.add('form-floating')
+
+      const select = document.createElement('select')
+      select.classList.add('form-select')
+      select.setAttribute('id', selectId)
+      select.setAttribute('aria-label', 'Floating label select example')
+
+      let option;
+      for (let i = 0; i < lists.length; i++) {
+        option = document.createElement('option')
+        option.setAttribute('value', lists[i]);
+        option.innerText = lists[i];
+        console.log(option)
+
+        select.appendChild(option);
+
+      }
+
+
+      const label = document.createElement('label');
+      label.setAttribute('for', selectId);
+      label.innerText = labelName
+
+      form.appendChild(select)
+      form.appendChild(label)
+      div.appendChild(form);
+      this.body.appendChild(div)
+      return;
+    }
+
+
+    /** *********************
+     * 
+     * textの値を登録する処理 => 完了するとscriptのupdate関数を実行する
+     * 
+    ********************* */
+    regist(text, startDate, endDate) {
+      google.script.run
+        .withSuccessHandler(update)
+        .setCalenderData(text, startDate, endDate);
     }
   }
 </script>

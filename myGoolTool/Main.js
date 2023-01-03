@@ -54,14 +54,13 @@ function getLastEvent(text, startDate, endDate) {
 }
 
 function setCalenderData(text, startDate, endDate) {
+  startDate = new Date(startDate);
+  endDate = new Date(endDate);
   if (!Common_Date.checkTime(startDate, endDate)) {
     throw new EvalError('No start and end')
   }
-  const date = Common_Date.getStr(new Date());
-  const start = new Date(date + ' 10:00:00');
-  const end = new Date(date + ' 11:00:00');
-  const Calender = new Calender(text)
-  Calender.save(start, end)
+  const SaveCal = new Calender(text)
+  SaveCal.save(startDate, endDate)
 }
 
 
@@ -90,6 +89,11 @@ function getRandomGoal() {
     checked: Goal.isChecked(num)
   }
   return JSON.stringify(res);
+}
+
+function getAll100List() {
+  const List100 = new List100Sheet();
+  return JSON.stringify(List100.getAllTitleArr())
 }
 
 
