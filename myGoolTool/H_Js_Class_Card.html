@@ -42,6 +42,13 @@
       this.cardBody.appendChild(cardTitle);
       return;
     }
+    setSmallText(text) {
+      const cardText = document.createElement('p');
+      cardText.classList.add('card-text', 'fw-light', 'fs-6', 'text')
+      cardText.innerText = text;
+      this.cardBody.appendChild(cardText);
+      return;
+    }
 
     setText(text, colorOption) {
       if (colorOption != 'text-success' && colorOption != 'text-danger' && colorOption != undefined) {

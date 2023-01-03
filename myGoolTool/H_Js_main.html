@@ -53,12 +53,16 @@
     const card = new SmallCard(res.name);
     card.setCount(res.count, '回');
     if (res.count) {
-      card.setText('最終日は' + res.lastDate + 'です');
-      card.setText('( ' + res.startDate + '~' + res.endDate + ' )');
+      card.setText('最終日:\n' + res.lastDate);
+      // card.setSmallText(res.startDate + '~' + res.endDate);
       const option = res.isCaution ? 'text-danger' : 'text-success'
-      card.setText('最後に行ってから' + res.passedDay + '日です', option);
+      card.setText('経過日:\n' + res.passedDay + '日', option);
+      if (res.isCaution) {
+
+        card.setText('早くやりましょう！', 'text-danger')
+      }
     } else {
-      card.setText('最近1度もいっていません', 'text-danger')
+      card.setText('早くやりましょう！', 'text-danger')
     }
     card.display()
 
