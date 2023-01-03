@@ -13,6 +13,10 @@
       'id': 'enjoy',
       'cautionDay': '5',
     },
+    '読書': {
+      'id': 'other',
+      'cautionDay': '99',
+    },
     '買い物': {
       'id': 'other',
       'cautionDay': '99',
@@ -47,10 +51,15 @@
     const res = JSON.parse(r);
     const NAME = res.name;
     const card = new SmallCard(res.name);
-    card.setCount(res.count, '個');
-    card.setText('最終日は' + res.lastDate + 'です');
-    const option = res.isCaution ? 'text-danger' : 'text-success'
-    card.setText('最後に行ってから' + res.passedDay + '日です', option);
+    card.setCount(res.count, '回');
+    if (res.count) {
+      card.setText('最終日は' + res.lastDate + 'です');
+      card.setText('( ' + res.startDate + '~' + res.endDate + ' )');
+      const option = res.isCaution ? 'text-danger' : 'text-success'
+      card.setText('最後に行ってから' + res.passedDay + '日です', option);
+    } else {
+      card.setText('最近1度もいっていません', 'text-danger')
+    }
     card.display()
 
 

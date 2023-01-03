@@ -1,7 +1,7 @@
 <div id="container" class="container-sm">
   <div class="accordion" id="accordionExample">
     <!-- INPUT START -->
-    <div class="accordion-item">
+    <!-- <div class="accordion-item">
       <h2 class="accordion-header" id="headingOne">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
           aria-expanded="true" aria-controls="collapseOne">
@@ -34,10 +34,10 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- INPUT END -->
     <!-- INPUT START -->
-    <div class="accordion-item">
+    <!-- <div class="accordion-item">
       <h2 class="accordion-header" id="headingTwo">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
           aria-expanded="false" aria-controls="collapseTwo">
@@ -64,7 +64,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- INPUT END -->
     <!-- INPUT START -->
     <!-- <div class="accordion-item">
@@ -119,7 +119,7 @@
     </div> -->
     <!-- INPUT END -->
     <!-- INPUT START -->
-    <div class="accordion-item">
+    <!-- <div class="accordion-item">
       <h2 class="accordion-header" id="heading5">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5"
           aria-expanded="false" aria-controls="collapse5">
@@ -146,14 +146,16 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- INPUT END -->
   </div>
 </div>
 
 <script>
-  const book = new AdminDashBoard('reading', '本');
-  book.setTextBox('0', '読んだ本')
+  const book = new AdminDashBoard('reading', '読書');
+  book.setTextBox('読んだ本')
+  book.setTextBox('感想')
+  book.setSelectBox('リスト選択', ['食事', '飲み会', '外出', '自宅'])
   book.setDateTime()
   book.setButton()
   book.display()
@@ -168,26 +170,23 @@
   haircut.setButton()
   haircut.display()
 
+  const enjoy = new AdminDashBoard('enjoy', '遊ぶ');
+  enjoy.setSelectBox('リスト選択', ['食事', '飲み会', '外出', '自宅'])
+  enjoy.setDateTime()
+  enjoy.setButton()
+  enjoy.display()
 
   google.script.run.
-    withSuccessHandler(setSelect)
+    withSuccessHandler((r) => {
+      const lists = JSON.parse(r);
+      console.log(lists)
+      const list100 = new AdminDashBoard('list100', 'やりたいこと100リスト');
+      list100.setSelectBox('リスト選択', lists)
+      list100.setDateTime()
+      list100.setButton()
+      list100.display()
+
+    })
     .getAll100List();
-
-  function setSelect(r) {
-    const lists = JSON.parse(r);
-    console.log(lists)
-    const list100 = new AdminDashBoard('list100', 'やりたいこと100リスト');
-    list100.setDateTime()
-    list100.setSelectBox('リスト選択', lists)
-    list100.setButton()
-    list100.display()
-
-  }
-
-  // haircut.setTime();
-  // let label = '遊んだ内容';
-  // let option = ['a', 'b'];
-  // haircut.setSelectBox(label, option);
-  // haircut.setButton();
 
 </script>

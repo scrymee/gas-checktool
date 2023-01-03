@@ -22,6 +22,9 @@
     static INPUT_ID = '-input'
     static SELECT_ID = '-select'
 
+    countSelectBox = 0;
+    countTextBox = 0;
+
     constructor(uniqueID, Name) {
       const ID = 'accordionExample'
       this.ID = ID;
@@ -67,7 +70,7 @@
 
     }
 
-    setTextBox(num, labelName) {
+    setTextBox(labelName) {
       const div = document.createElement('div')
       div.classList.add('mb-3')
 
@@ -80,14 +83,14 @@
       const input = document.createElement('input');
       input.classList.add('form-control');
       input.setAttribute('type', 'text')
-      input.setAttribute('id', this.uniqueID + num + AdminDashBoard.INPUT_ID)
+      input.setAttribute('id', this.uniqueID + this.countTextBox + AdminDashBoard.INPUT_ID)
 
       div.appendChild(label);
       div.appendChild(input);
 
       this.body.appendChild(div)
 
-      this.isTextBox = true;
+      this.countTextBox += 1;
       return;
     }
 
@@ -105,12 +108,31 @@
         startDate = Common_Date.convertFromLocalTime(startDate)
         endDate = Common_Date.convertFromLocalTime(endDate)
         // 文字列などを保存する
-        let msg = this.Name
-        if (this.isTextBox) {
-          msg = document.getElementById(this.uniqueID + '0' + AdminDashBoard.INPUT_ID).value
-          console.log(msg);
+        let value = this.Name
+        if (this.countTextBox > 0) {
+          for (let i = 0; i < this.countTextBox; i++) {
+            let text = document.getElementById(this.uniqueID + i + AdminDashBoard.INPUT_ID).value;
+            if (!text) continue;
+            value += '/';
+            value += text
+            console.log(value)
+          }
         }
-        this.regist(msg, startDate, endDate)
+        if (this.countSelectBox > 0) {
+          for (let i = 0; i < this.countSelectBox; i++) {
+            let selected = document.getElementById(this.uniqueID + i + AdminDashBoard.SELECT_ID);
+            // selectedで選択されている値の番号が取得されます
+            let idx = selected.selectedIndex;
+            // 値を取得
+            let res = selected.options[idx].value;
+            if (!res) continue;
+            value += '/';
+            // 値を取得
+            value += res;
+          }
+        }
+        console.log(value);
+        this.register(value, startDate, endDate)
       })
     }
 
@@ -168,7 +190,7 @@
 
 
     setSelectBox(labelName, lists) {
-      const selectId = this.uniqueID + AdminDashBoard.SELECT_ID;
+      const selectId = this.uniqueID + this.countSelectBox + AdminDashBoard.SELECT_ID;
       const div = document.createElement('div')
       div.classList.add('mb-3')
 
@@ -181,6 +203,11 @@
       select.setAttribute('aria-label', 'Floating label select example')
 
       let option;
+      option = document.createElement('option')
+      option.setAttribute('value', '');
+      option.innerText = '未設定';
+      select.appendChild(option);
+
       for (let i = 0; i < lists.length; i++) {
         option = document.createElement('option')
         option.setAttribute('value', lists[i]);
@@ -200,19 +227,21 @@
       form.appendChild(label)
       div.appendChild(form);
       this.body.appendChild(div)
+
+      this.countSelectBox += 1;
       return;
     }
-
 
     /** *********************
      * 
      * textの値を登録する処理 => 完了するとscriptのupdate関数を実行する
      * 
     ********************* */
-    regist(text, startDate, endDate) {
+    register(text, startDate, endDate) {
       google.script.run
         .withSuccessHandler(update)
         .setCalenderData(text, startDate, endDate);
     }
+
   }
 </script>

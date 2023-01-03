@@ -53,10 +53,32 @@
       this.cardBody.appendChild(cardText);
       return;
     }
-    setGraph(id, dataLabel, data, min) {
+    setGraph(id, dataLabel, data) {
       this.graphID = id
-      this.graphDataLabel = dataLabel
-      this.graphData = data;
+      this.graphType = 'line'
+      this.graphData = {
+        labels: dataLabel,
+        datasets: [{
+          label: 'Red',
+          data: data,
+          borderColor: '#f88',
+        }]
+      };
+      const graph = document.createElement('canvas');
+      graph.setAttribute('id', this.graphID);
+      this.cardBody.appendChild(graph)
+      return;
+    }
+    setDoughNutsGraph(id, dataLabel, data) {
+      this.graphID = id
+      this.graphType = 'doughnut'
+      this.graphData = {
+        datasets: [{
+          label: ['Red', 'Green', 'Blue'],
+          data: [10, 20, 30],
+          backgroundColor: ['#f88', '#484', '#48f'],
+        }]
+      };
       const graph = document.createElement('canvas');
       graph.setAttribute('id', this.graphID);
       this.cardBody.appendChild(graph)
@@ -77,21 +99,14 @@
 
       var ctx = document.getElementById(this.graphID);
       var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['2022/09', '2022/10', '2022/11', '2022/12', '2023/01', '2023/02', '2023/03'],
-          datasets: [{
-            label: 'Red',
-            data: [20, 35, 40, 30, 45, 35, 40],
-            borderColor: '#f88',
-          }],
-        },
-        options: {
-          y: {
-            min: 0,
-            max: 60,
-          },
-        },
+        type: this.graphType,
+        data: this.graphData,
+        // options: {
+        //   y: {
+        //     min: 0,
+        //     max: 60,
+        //   },
+        // },
       });
       return;
     }

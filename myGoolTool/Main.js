@@ -34,18 +34,22 @@ function getLastEvent(text, startDate, endDate) {
 
   const calender = new Calender(text, startDate, endDate);
 
-  if (!calender.count()) {
-    return false;
+  let isCaution = true
+  let passedDay = 9999;
+  let lastDate = false
+  if (calender.count()) {
+    lastDate = calender.lastDate()
+    isCaution = Common_Date.checkOverFromNow(lastDate, NAME_RELATION[text].cautionDay)
+    passedDay = Common_Date.passedDay(lastDate);
   }
-  const lastDate = calender.lastDate()
   const res = {
     name: text,
     lastDate: lastDate,
     count: calender.count(),
     startDate: startDate,
     endDate: endDate,
-    isCaution: Common_Date.checkOverFromNow(lastDate, NAME_RELATION[text].cautionDay),
-    passedDay: Common_Date.passedDay(lastDate),
+    isCaution: isCaution,
+    passedDay: passedDay,
     graph: { grapLabel: [1, 2, 3, 4], graphData: [3, 4, 5, 6] }
   }
   console.log(res);
