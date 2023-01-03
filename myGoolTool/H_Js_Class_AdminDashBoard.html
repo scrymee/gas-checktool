@@ -11,49 +11,77 @@
    */
   class AdminDashBoard {
 
-    constructor(size, header, contentId) {
-      if (size != 'col-6' && size != 'col-12') {
-        throw '[input Error] サイズ指定が不適切な値になっている';
-      }
+
+    constructor(uniqueName, Title) {
+      const ID = 'accordionExample'
+      this.ID = ID;
+      const Parent = '#' + ID
+
       const div = document.createElement('div');
-      div.classList.add(size, 'col-md-6', 'col-lg-3', 'mb-4', 'mx-lg-0')
-      this.div = div;
+      div.classList.add('according-item')
+      this.AdminDiv = div;
 
-      const card = document.createElement('div');
-      card.classList.add('card')
-      this.card = card;
+      const header = document.createElement('h2');
+      header.classList.add('accordion-header')
+      header.setAttribute('id', uniqueName)
 
-      const cardHeader = document.createElement('h5');
-      cardHeader.classList.add('card-header');
-      cardHeader.innerText = header;
-      this.card.appendChild(cardHeader);
+      const headerContent = document.createElement('button');
+      headerContent.classList.add('accordion-button', 'collapsed')
+      headerContent.setAttribute('type', 'button')
+      headerContent.setAttribute('data-bs-toggle', 'collapse')
+      headerContent.setAttribute('data-bs-target', '#collaspe' + uniqueName)
+      headerContent.setAttribute('area-expanded', 'false')
+      headerContent.setAttribute('area-controls', '#collaspe' + uniqueName)
+      headerContent.innerText = Title
+      header.appendChild(headerContent);
+      this.header = header;
 
-      const cardBody = document.createElement('div');
-      cardBody.classList.add('card-body')
-      this.cardBody = cardBody;
+      const body = document.createElement('div');
+      body.classList.add('accordion-collapse', 'collapse')
+      body.setAttribute('id', 'collapse' + uniqueName)
+      body.setAttribute('aria-labelledby', uniqueName)
+      body.setAttribute('data-bs-parent', Parent)
 
-      this.CONTENTSID = contentId;
+
+      const bodyContent = document.createElement('div');
+      bodyContent.classList.add('accordion-body')
+      body.appendChild(bodyContent);
+
+
+
+      this.AdminBody = body;
+
+
+      //   <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5"
+      //     data-bs-parent="#accordionExample">
+      //     <div class="accordion-body">
+      //       <div class="mb-3">
+      //         <div class="form-floating">
+      //           <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+      //             <option selected>未設定</option>
+      //             <option value="1">飲み会</option>
+      //             <option value="2">趣味</option>
+      //             <option value="3">食事</option>
+      //             <option value="4">観光</option>
+      //           </select>
+      //           <label for="floatingSelect">遊んだ目的</label>
+      //         </div>
+      //       </div>
+      //       <div class="d-grid gap-2 col-6 mx-auto">
+      //         <button class="btn btn-primary" type="button">登録！</button>
+      //       </div>
+      //     </div>
+      //   </div>
+      // </div >
+      // <!--INPUT END-- >
     }
 
-    setCount(count, counterWord) {
-      const cardTitle = document.createElement('h5');
-      cardTitle.classList.add('card-title')
-      cardTitle.innerHTML = '<span class="fs-2 fw-bold">' + count + '</span>' + counterWord;
-      this.cardBody.appendChild(cardTitle);
-      return;
+    display() {
+      this.AdminDiv.appendChild(this.header)
+      this.AdminDiv.appendChild(this.AdminBody)
+      document.getElementById(this.ID).appendChild(this.AdminDiv);
     }
 
-    setText(text, colorOption) {
-      if (colorOption != 'text-success' && colorOption != 'text-danger' && colorOption != undefined) {
-        console.log(option)
-        throw 'CARDTEXT-OPTION-ERRROR'
-      }
-      const cardText = document.createElement('p');
-      cardText.classList.add('card-text', colorOption)
-      cardText.innerText = text;
-      this.cardBody.appendChild(cardText);
-      return;
-    }
     setGraph(id, dataLabel, data, min) {
       this.graphID = id
       this.graphDataLabel = dataLabel
@@ -68,35 +96,6 @@
       this.card.appendChild(this.cardBody);
       this.div.appendChild(this.card);
       return this.div;
-    }
-
-    display() {
-      document.getElementById(this.CONTENTSID).appendChild(this.createHtml())
-      console.log(this.graphID);
-      if (!this.graphID) {
-        return
-      }
-
-      var ctx = document.getElementById(this.graphID);
-      console.log(ctx);
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['2022/09', '2022/10', '2022/11', '2022/12', '2023/01', '2023/02', '2023/03'],
-          datasets: [{
-            label: 'Red',
-            data: [20, 35, 40, 30, 45, 35, 40],
-            borderColor: '#f88',
-          }],
-        },
-        options: {
-          y: {
-            min: 0,
-            max: 60,
-          },
-        },
-      });
-      return;
     }
   }
 </script>
