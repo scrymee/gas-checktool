@@ -100,6 +100,49 @@ function getAll100List() {
   return JSON.stringify(List100.getAllTitleArr())
 }
 
+/**
+ * 指定期間の数をグラフ化して返却する
+ * @returns Json
+ */
+function getListForGraph(text, term = 'week') {
+  text = '遊ぶ';
+  let label = [];
+  let data = [];
+  const now = new Date()
+
+  let monday;
+  let sunday;
+  let count;
+  let calender
+  let targetDate = now;
+  for (let i = 0; i < 6; i++) {
+    console.log(targetDate);
+    // 今月
+    monday = Common_Date.getMondayYmd(targetDate)
+    sunday = Common_Date.calcDay(monday, 6)
+    calender = new Calender(text, monday, sunday)
+    count = calender.count()
+
+    label.push(monday);
+    data.push(count);
+    // 先週に移動する. マイナス１で引くと、月替りでバグる。
+    targetDate = Common_Date.calcDay(monday, -3);
+
+  }
+  label = label.reverse()
+  data = data.reverse()
+
+
+  const res = {
+    text: text,
+    label: label,
+    data: data,
+    // label: ['2022/09', '2022/10', '2022/11', '2022/12', '2023/01', '2023/02', '2023/03'],
+    // data: [2, 10, 4, 0, 11, 5, 0]
+  }
+  return JSON.stringify(res);
+}
+
 
 
 

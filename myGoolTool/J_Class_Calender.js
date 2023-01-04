@@ -42,10 +42,10 @@ class Calender {
    * 指定日から指定日までの「完全一致」の全イベントを取得する
    * @return void
    */
-  completeTarget() {
-    const options = { search: this, text };
-    return this.calendar.getEvents(this.startDate, this.endDate, options);
-  }
+  // completeTarget() {
+  //   const options = { search: this, text };
+  //   return this.calendar.getEvents(this.startDate, this.endDate, options);
+  // }
 
   /**
    * 指定日から指定日までの「部分一致の」全イベントを取得する

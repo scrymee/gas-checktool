@@ -45,6 +45,23 @@
 </div>
 
 <script>
+    google.script.run.
+        withSuccessHandler((r) => {
+            const res = JSON.parse(r);
+            console.log(res.label);
+            const tmp = new BigCard('グラフtmp');
+            tmp.setText('最近の集会実行数');
+            tmp.setGraph('tmp'
+                , res.label
+                , res.data);
+            // , ['2022/09', '2022/10', '2022/11', '2022/12', '2023/01', '2023/02', '2023/03']
+            // , [20, 35, 40, 30, 45, 35, 40]);
+            tmp.setText('aaaaa', 'text-success');
+            tmp.setCount('55', '個');
+            tmp.display();
+
+        })
+        .getListForGraph();
 
     const d = new BigCard('グラフ2');
     d.setText('aaaaa');
@@ -54,6 +71,14 @@
     d.setText('aaaaa', 'text-success');
     d.setCount('55', '個');
     d.display();
+
+    const e = new BigCard('目標');
+    e.setText('サンプルサンプル');
+    e.setCount('10', '冊本を読む')
+    e.setGraph('goalgraph'
+        , ['2022/09', '2022/10', '2022/11', '2022/12', '2023/01', '2023/02', '2023/03']
+        , [1, 2, 0, 3, 4, 2, 0]);
+    e.display()
 
     // const e = new BigCard('グラフ2');
     // e.setText('aaaaa');

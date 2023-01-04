@@ -1,3 +1,9 @@
+function test_getListForGraph() {
+  getListForGraph('遊ぶ')
+}
+
+
+
 function リスト100を取得する() {
   console.log(getAll100List())
 }
