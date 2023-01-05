@@ -1,57 +1,63 @@
 // const CALENDER_ID = 'XXXXXXXXX';
 
-// 項目を追加したらここに記載する
-const NAME_RELATION = {
-  '散髪': {
-    'cautionDay': '30',
-  },
-  '遊ぶ': {
-    'cautionDay': '5',
-  },
-  '買い物': {
-    'cautionDay': '99',
-  },
-  'サウナ': {
-    'cautionDay': '10',
-  },
-  '読書': {
-    'cautionDay': '10',
-  }
-};
+// // 項目を追加したらここに記載する
+// const NAME_RELATION = {
+//   '散髪': {
+//     'cautionDay': '30',
+//   },
+//   '遊ぶ': {
+//     'cautionDay': '5',
+//   },
+//   '買い物': {
+//     'cautionDay': '99',
+//   },
+//   'サウナ': {
+//     'cautionDay': '10',
+//   },
+//   '読書': {
+//     'cautionDay': '10',
+//   }
+// };
 
 function getCategory() {
   let res = [
     {
       id: 'haircut',
       name: '散髪',
-      cautionDay: 60,
-      text: ['テスト', 'テスト２']
+      cautionDay: 30,
     },
     {
       id: 'sauna',
       name: 'サウナ',
-      cautionDay: 60,
+      cautionDay: 10,
     },
     {
       id: 'enjoy',
       name: '遊ぶ',
-      cautionDay: 60,
+      cautionDay: 10,
       graph: true,
-      text: ['テスト', 'テスト２']
+      text: ['エンターテイメント', '食事', '飲み会']
     },
     {
       id: 'reading',
       name: '読書',
       cautionDay: 60,
-      text: ['テスト', 'テスト２'],
-      select: [['りんご', 'みかん']]
+      text: ['本のタイトル', '感想'],
+      select: [['プログラミング', '趣味']]
     },
     {
       id: 'buy',
       name: '買い物',
       cautionDay: 60,
+      select: [['１万円以上の個人用', '贈答用']],
       text: ['テスト', 'テスト２']
     },
+    // {
+    //   id: 'buy',
+    //   name: '買い物',
+    //   cautionDay: 60,
+    //   sheetName: '100リスト',
+    // },
   ]
   return JSON.stringify(res);
 }
