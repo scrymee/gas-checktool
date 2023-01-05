@@ -72,26 +72,18 @@ function getCategory() {
         break;
       default:
     }
-    if (type == 'テキスト') {
-
-    }
     // ===========================
     // データの登録
     // ===========================
     // 次が定義されていない　または、　次の値が空でなく、現在の値と違う場合にPUSHする。つまり終了処理
     if (ID[i + 1] == undefined || (ID[i + 1][0] != '' && ID[i + 1][0] != nowID)) {
-      // ---------------------
-      // テキストの場合
-      // --------------------
-      switch (type) {
-        case 'テキスト':
-          res.text = textArr
-          break;
-        case 'セレクト':
-          res.select = selectArr
-          break;
-        default:
+      if (textArr.length > 0) {
+        res.text = textArr
       }
+      if (selectArr.length > 0) {
+        res.select = selectArr
+      }
+
       ret.push(res);
       textArr = []
       selectArr = []
