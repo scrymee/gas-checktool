@@ -36,7 +36,7 @@ function getCategory() {
       name: '遊ぶ',
       cautionDay: 10,
       graph: true,
-      text: ['エンターテイメント', '食事', '飲み会']
+      select: [['エンターテイメント', '食事', '飲み会']]
     },
     {
       id: 'reading',
@@ -50,7 +50,12 @@ function getCategory() {
       name: '買い物',
       cautionDay: 60,
       select: [['１万円以上の個人用', '贈答用']],
-      text: ['テスト', 'テスト２']
+    },
+    {
+      id: 'activity',
+      name: '運動',
+      cautionDay: 3,
+      graph: true,
     },
     // {
     //   id: 'buy',
