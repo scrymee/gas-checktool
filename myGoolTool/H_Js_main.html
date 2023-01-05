@@ -1,43 +1,156 @@
 <script>
+
+
+  async function init() {
+
+    //データの取得
+    let res
+    let r
+    const category = await gasRun('getCategory');
+    const categoryData = JSON.parse(category);
+    let data;
+    let i = 0;
+    while (i < categoryData.length) {
+
+      // ---------------------
+      // TOPページのCard表示
+      // ---------------------
+      data = categoryData[i]
+      console.log(data)
+      r = await gasRun('getLastEvent', data.id, data.name, data.cautionDay, Common_Date.calcDay(Common_Date.getNow(), '-60'), Common_Date.getNow());
+      res = JSON.parse(r);
+      const NAME = res.name;
+      const card = (data.graph == undefined) ? new SmallCard(res.name) : new BigCard(res.name);
+      card.setCount(res.count, '回');
+      console.log(data.graph)
+
+      // グラフフラグがついていればグラフを表示する
+      if (data.graph != undefined && data.graph) {
+        r = await gasRun('getListForGraph', data.name);
+        graph = JSON.parse(r);
+        card.setGraph(data.id
+          , graph.label
+          , graph.data
+        );
+      }
+
+      // 数が存在していれば期限を表示する
+      if (res.count) {
+        card.setText('最終日:\n' + res.lastDate);
+        // card.setSmallText(res.startDate + '~' + res.endDate);
+        const option = res.isCaution ? 'text-danger' : 'text-success'
+        card.setText('経過日:\n' + res.passedDay + '日', option);
+        if (res.isCaution) {
+
+          card.setText('早くやりましょう！', 'text-danger')
+        }
+      } else {
+        card.setText('早くやりましょう！', 'text-danger')
+      }
+      card.display()
+
+      // ---------------------
+      // Adminの項目表示
+      // ---------------------
+      const admin = new AdminDashBoard(data.id, data.name);
+      if (data.text != undefined) {
+        for (let i = 0; i < data.text.length; i++) {
+          admin.setTextBox(data.text[i])
+        }
+
+      }
+      if (data.select != undefined) {
+        for (let i = 0; i < data.select.length; i++) {
+          admin.setSelectBox('リスト選択', data.select[i])
+        }
+      }
+      // admin.setSelectBox('リスト選択', ['食事', '飲み会', '外出', '自宅'])
+      admin.setDateTime()
+      admin.setButton()
+      admin.display()
+
+      // 加算
+      i++
+    }
+    console.log('init end')
+  }
+  init()
+
+  // GASをPromiseで実行する
+  // gasRun(関数名, 引数)
+  // gasRun('getCategory', text, list)
+  function gasRun(func, ...args) {
+    return new Promise(function (resolve, reject) {
+      google.script.run.withSuccessHandler(function (...e) {
+        resolve(...e);
+      }).withFailureHandler(function (...e) {
+        reject(...e);
+      })[func](...args);
+    });
+  }
+
+
+
+
+
+
+
   // 日付の取得
   //const today = new Date();
   //document.getElementById('today').innerText = today.getMonth() + 1 +'/' + today.getDate() + ' ('+[ "日", "月", "火", "水", "木", "金", "土" ][today.getDay()]+')';
 
 
-  const NAME_RELATION = {
-    '散髪': {
-      'id': 'haircut',
-      'cautionDay': '30',
-    },
-    '遊ぶ': {
-      'id': 'enjoy',
-      'cautionDay': '5',
-    },
-    '読書': {
-      'id': 'other',
-      'cautionDay': '99',
-    },
-    '買い物': {
-      'id': 'other',
-      'cautionDay': '99',
-    },
-    'サウナ': {
-      'id': 'hotspring',
-      'cautionDay': '10',
-    }
-  };
+  // const NAME_RELATION = {
+  //   '散髪': {
+  //     'id': 'haircut',
+  //     'cautionDay': '30',
+  //   },
+  //   '遊ぶ': {
+  //     'id': 'enjoy',
+  //     'cautionDay': '5',
+  //   },
+  //   '読書': {
+  //     'id': 'other',
+  //     'cautionDay': '99',
+  //   },
+  //   '買い物': {
+  //     'id': 'other',
+  //     'cautionDay': '99',
+  //   },
+  //   'サウナ': {
+  //     'id': 'hotspring',
+  //     'cautionDay': '10',
+  //   }
+  // };
 
-  /** *********************
-   * 
-   * 最初の読み込みによる実行
-   * 
-  ********************* */
-  // NAME RELATIONのkey名に紐づくデータをカレンダーから取得して更新する
-  Object.keys(NAME_RELATION).forEach((index) => {
-    getFromCalender(index);
-  })
-  getRandomGoal()
-  getRandomList100()
+  // /** *********************
+  //  * 
+  //  * 最初の読み込みによる実行
+  //  * 
+  // ********************* */
+  // // NAME RELATIONのkey名に紐づくデータをカレンダーから取得して更新する
+  // Object.keys(NAME_RELATION).forEach((index) => {
+  //   getFromCalender(index);
+  // })
+  // getFromCalender('散髪');
+  // getFromCalender('遊ぶ');
+  // getFromCalender('読書');
+  // getFromCalender('買い物');
+  // getFromCalender('サウナ');
+  google.script.run
+    .withSuccessHandler((r) => {
+      const res = JSON.parse(r);
+      document.getElementById('list100').innerHTML = res.msg
+
+    })
+    .getRandomList100();
+
+  google.script.run
+    .withSuccessHandler((r) => {
+      const res = JSON.parse(r);
+      document.getElementById('goal').innerHTML = res.msg
+    })
+    .getRandomGoal();
 
   /**
    * 
@@ -45,26 +158,6 @@
    * 
   */
   function updateCard(r) {
-    // ----------------------------
-    // 戻り値の取得
-    //-----------------------------
-    const res = JSON.parse(r);
-    const NAME = res.name;
-    const card = new SmallCard(res.name);
-    card.setCount(res.count, '回');
-    if (res.count) {
-      card.setText('最終日:\n' + res.lastDate);
-      // card.setSmallText(res.startDate + '~' + res.endDate);
-      const option = res.isCaution ? 'text-danger' : 'text-success'
-      card.setText('経過日:\n' + res.passedDay + '日', option);
-      if (res.isCaution) {
-
-        card.setText('早くやりましょう！', 'text-danger')
-      }
-    } else {
-      card.setText('早くやりましょう！', 'text-danger')
-    }
-    card.display()
 
 
 
@@ -74,10 +167,32 @@
    * textを持つカレンダーを取得する処理=> 完了するとscriptのupdate関数を実行する
    * 
   ********************* */
-  function getFromCalender(text) {
+  function getFromCalender(id, text, cautionDay) {
     google.script.run.
-      withSuccessHandler(updateCard)
-      .getLastEvent(text, Common_Date.calcDay(Common_Date.getNow(), '-60'), Common_Date.getNow());
+      withSuccessHandler((r) => {
+
+        // ----------------------------
+        // 戻り値の取得
+        //-----------------------------
+        const res = JSON.parse(r);
+        const NAME = res.name;
+        const card = new SmallCard(res.name);
+        card.setCount(res.count, '回');
+        if (res.count) {
+          card.setText('最終日:\n' + res.lastDate);
+          // card.setSmallText(res.startDate + '~' + res.endDate);
+          const option = res.isCaution ? 'text-danger' : 'text-success'
+          card.setText('経過日:\n' + res.passedDay + '日', option);
+          if (res.isCaution) {
+
+            card.setText('早くやりましょう！', 'text-danger')
+          }
+        } else {
+          card.setText('早くやりましょう！', 'text-danger')
+        }
+        card.display()
+      })
+      .getLastEvent(id, text, cautionDay, Common_Date.calcDay(Common_Date.getNow(), '-60'), Common_Date.getNow());
   }
 
   /** *********************
@@ -92,30 +207,4 @@
   }
 
 
-
-  /** *********************
-   * 
-   * textの値を登録する処理 => 完了するとscriptのupdate関数を実行する
-   * 
-  ********************* */
-  function getRandomList100() {
-    google.script.run
-      .withSuccessHandler(updateList100)
-      .getRandomList100();
-  }
-
-  function updateList100(r) {
-    const res = JSON.parse(r);
-    document.getElementById('list100').innerHTML = res.msg
-  }
-  function getRandomGoal() {
-    google.script.run
-      .withSuccessHandler(updateGoal)
-      .getRandomGoal();
-  }
-
-  function updateGoal(r) {
-    const res = JSON.parse(r);
-    document.getElementById('goal').innerHTML = res.msg
-  }
 </script>

@@ -1,3 +1,64 @@
+function testSheet() {
+  const sheet = new SpreadSheet('設定')
+  const row = sheet.getLastRow();
+  const ID = sheet.getValues('A2', 'A' + row);
+  const NAME = sheet.getValues('B2', 'B' + row);
+  const Caution = sheet.getValues('C2', 'C' + row);
+  const isGraph = sheet.getValues('D2', 'D' + row);
+  const Type = sheet.getValues('E2', 'E' + row);
+  const Value = sheet.getValues('F2', 'F' + row);
+
+  let id;
+  let name;
+  let type;
+  let nowID
+  let caution
+
+  let textArr = [];
+
+  let ret = [];
+  let res = {};
+  // 2から始まるので回転数を１減らす
+  for (let i = 0; i < row - 1; i++) {
+    // 名前
+    id = ID[i][0]
+    if (id != '') {
+
+      nowID = id
+      res.id = id
+      res.name = NAME[i][0]
+      res.caution = Caution[i][0]
+    }
+    type = Type[i][0]
+    if (type == 'テキスト') {
+      res.text = textArr.push(Value[i][0])
+    }
+    console.log(type)
+    // 次が定義されていない　または、　次の値が空でなく、現在の値と違う場合
+    if (ID[i + 1] == undefined || (ID[i + 1][0] != '' && ID[i + 1][0] != nowID)) {
+      //最後のデータがPUSHされない
+      if (type = 'テキスト') {
+        res.text = textArr
+      }
+      ret.push(res);
+      textArr = []
+      res = {};
+    }
+
+  }
+  console.log(ret);
+
+  const ret2 = [
+    {
+      name: '散髪',
+      cautionDay: 60,
+      id: 'haircut',
+      selectbox: [['りんご', 'みかん']],
+      text: ['読んだ本']
+    },
+  ]
+}
+
 function test_getListForGraph() {
   getListForGraph('遊ぶ')
 }

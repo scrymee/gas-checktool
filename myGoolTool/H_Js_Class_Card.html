@@ -26,6 +26,9 @@
       const cardHeader = document.createElement('h5');
       cardHeader.classList.add('card-header');
       cardHeader.innerText = header;
+
+      // カード名
+      this.text = header;
       this.card.appendChild(cardHeader);
 
       const cardBody = document.createElement('div');
@@ -66,7 +69,7 @@
       this.graphData = {
         labels: dataLabel,
         datasets: [{
-          label: 'Red',
+          label: this.text,
           data: data,
           borderColor: '#f88',
         }]
@@ -105,15 +108,18 @@
       }
 
       var ctx = document.getElementById(this.graphID);
+      const options = {
+        scale: {
+          ticks: {
+            precision: 0
+          }
+        }
+      }
+
       var myChart = new Chart(ctx, {
         type: this.graphType,
         data: this.graphData,
-        // options: {
-        //   y: {
-        //     min: 0,
-        //     max: 60,
-        //   },
-        // },
+        options: options
       });
       return;
     }

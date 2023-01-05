@@ -7,7 +7,7 @@
  * 
  * ===============================
  */
-class SpreedSheet {
+class SpreadSheet {
   /**
    * 
    * @param string $text カレンダー検索対象の文字
@@ -42,6 +42,10 @@ class SpreedSheet {
     //最終列の数字を表示する
     return this.sheet.getLastRow();
   }
+  getValues(rangeA, rangeB) {
+    return this.sheet.getRange(rangeA + ":" + rangeB).getValues();
+
+  }
 }
 
 /**
@@ -51,7 +55,7 @@ class SpreedSheet {
  * 
  * ===============================
  */
-class List100Sheet extends SpreedSheet {
+class List100Sheet extends SpreadSheet {
   constructor() {
     super('100リスト')
   }
@@ -83,7 +87,7 @@ class List100Sheet extends SpreedSheet {
  * 
  * ===============================
  */
-class GoalSheet extends SpreedSheet {
+class GoalSheet extends SpreadSheet {
   constructor() {
     super('目標')
   }

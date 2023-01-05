@@ -115,7 +115,7 @@
             if (!text) continue;
             value += '/';
             value += text
-            console.log(value)
+            // console.log(value)
           }
         }
         if (this.countSelectBox > 0) {
@@ -131,7 +131,7 @@
             value += res;
           }
         }
-        console.log(value);
+        // console.log(value);
         this.register(value, startDate, endDate)
       })
     }
@@ -144,7 +144,7 @@
       button.innerText = '登録'
       const content = document.createElement('div');
       content.classList.add('d-grid', 'gap-2', 'col-6', 'mx-auto')
-      console.log(content)
+      // console.log(content)
       content.appendChild(button)
 
       const div = document.createElement('div')
@@ -212,7 +212,7 @@
         option = document.createElement('option')
         option.setAttribute('value', lists[i]);
         option.innerText = lists[i];
-        console.log(option)
+        // console.log(option)
 
         select.appendChild(option);
 

@@ -152,34 +152,34 @@
 </div>
 
 <script>
-  const book = new AdminDashBoard('reading', '読書');
-  book.setTextBox('読んだ本')
-  book.setTextBox('感想')
-  book.setSelectBox('リスト選択', ['食事', '飲み会', '外出', '自宅'])
-  book.setDateTime()
-  book.setButton()
-  book.display()
+  // const book = new AdminDashBoard('reading', '読書');
+  // book.setTextBox('読んだ本')
+  // book.setTextBox('感想')
+  // book.setSelectBox('リスト選択', ['食事', '飲み会', '外出', '自宅'])
+  // book.setDateTime()
+  // book.setButton()
+  // book.display()
 
-  const sauna = new AdminDashBoard('sauna', 'サウナ');
-  sauna.setDateTime()
-  sauna.setButton()
-  sauna.display()
+  // const sauna = new AdminDashBoard('sauna', 'サウナ');
+  // sauna.setDateTime()
+  // sauna.setButton()
+  // sauna.display()
 
-  const haircut = new AdminDashBoard('haircut', '散髪');
-  haircut.setDateTime()
-  haircut.setButton()
-  haircut.display()
+  // const haircut = new AdminDashBoard('haircut', '散髪');
+  // haircut.setDateTime()
+  // haircut.setButton()
+  // haircut.display()
 
-  const enjoy = new AdminDashBoard('enjoy', '遊ぶ');
-  enjoy.setSelectBox('リスト選択', ['食事', '飲み会', '外出', '自宅'])
-  enjoy.setDateTime()
-  enjoy.setButton()
-  enjoy.display()
+  // const enjoy = new AdminDashBoard('enjoy', '遊ぶ');
+  // enjoy.setSelectBox('リスト選択', ['食事', '飲み会', '外出', '自宅'])
+  // enjoy.setDateTime()
+  // enjoy.setButton()
+  // enjoy.display()
 
   google.script.run.
     withSuccessHandler((r) => {
       const lists = JSON.parse(r);
-      console.log(lists)
+      // console.log(lists)
       const list100 = new AdminDashBoard('list100', 'やりたいこと100リスト');
       list100.setSelectBox('リスト選択', lists)
       list100.setDateTime()

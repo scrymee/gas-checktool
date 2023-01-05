@@ -1,23 +1,60 @@
 // const CALENDER_ID = 'XXXXXXXXX';
 
+// 項目を追加したらここに記載する
 const NAME_RELATION = {
   '散髪': {
-    'id': 'haircut',
     'cautionDay': '30',
   },
   '遊ぶ': {
-    'id': 'enjoy',
     'cautionDay': '5',
   },
   '買い物': {
-    'id': 'other',
     'cautionDay': '99',
   },
   'サウナ': {
-    'id': 'hotspring',
+    'cautionDay': '10',
+  },
+  '読書': {
     'cautionDay': '10',
   }
 };
+
+function getCategory() {
+  let res = [
+    {
+      id: 'haircut',
+      name: '散髪',
+      cautionDay: 60,
+      text: ['テスト', 'テスト２']
+    },
+    {
+      id: 'sauna',
+      name: 'サウナ',
+      cautionDay: 60,
+    },
+    {
+      id: 'enjoy',
+      name: '遊ぶ',
+      cautionDay: 60,
+      graph: true,
+      text: ['テスト', 'テスト２']
+    },
+    {
+      id: 'reading',
+      name: '読書',
+      cautionDay: 60,
+      text: ['テスト', 'テスト２'],
+      select: [['りんご', 'みかん']]
+    },
+    {
+      id: 'buy',
+      name: '買い物',
+      cautionDay: 60,
+      text: ['テスト', 'テスト２']
+    },
+  ]
+  return JSON.stringify(res);
+}
 
 
 /**
@@ -26,7 +63,7 @@ const NAME_RELATION = {
  * @param string $text カレンダー検索対象の文字
  * 
  */
-function getLastEvent(text, startDate, endDate) {
+function getLastEvent(id, text, cautionDay, startDate, endDate) {
   // const now = new Date()
   // const startDate = Common_Date.getFirstDate(now);
   // const endDate = Common_Date.getLastDate(now);
@@ -39,7 +76,7 @@ function getLastEvent(text, startDate, endDate) {
   let lastDate = false
   if (calender.count()) {
     lastDate = calender.lastDate()
-    isCaution = Common_Date.checkOverFromNow(lastDate, NAME_RELATION[text].cautionDay)
+    isCaution = Common_Date.checkOverFromNow(lastDate, cautionDay)
     passedDay = Common_Date.passedDay(lastDate);
   }
   const res = {
@@ -105,7 +142,6 @@ function getAll100List() {
  * @returns Json
  */
 function getListForGraph(text, term = 'week') {
-  text = '遊ぶ';
   let label = [];
   let data = [];
   const now = new Date()
@@ -114,6 +150,7 @@ function getListForGraph(text, term = 'week') {
   let sunday;
   let count;
   let calender
+  let countAll = 0;
   let targetDate = now;
   for (let i = 0; i < 6; i++) {
     console.log(targetDate);
@@ -127,6 +164,7 @@ function getListForGraph(text, term = 'week') {
     data.push(count);
     // 先週に移動する. マイナス１で引くと、月替りでバグる。
     targetDate = Common_Date.calcDay(monday, -3);
+    countAll += count;
 
   }
   label = label.reverse()
@@ -135,6 +173,7 @@ function getListForGraph(text, term = 'week') {
 
   const res = {
     text: text,
+    count: countAll,
     label: label,
     data: data,
     // label: ['2022/09', '2022/10', '2022/11', '2022/12', '2023/01', '2023/02', '2023/03'],
