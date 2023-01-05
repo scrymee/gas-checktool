@@ -20,6 +20,91 @@
 // };
 
 function getCategory() {
+  const sheet = new SpreadSheet('設定')
+  const row = sheet.getLastRow();
+  const ID = sheet.getValues('A2', 'A' + row);
+  const NAME = sheet.getValues('B2', 'B' + row);
+  const Caution = sheet.getValues('C2', 'C' + row);
+  const isGraph = sheet.getValues('D2', 'D' + row);
+  const Type = sheet.getValues('E2', 'E' + row);
+  const Value = sheet.getValues('F2', 'F' + row);
+
+  let id;
+  let type;
+  let nowID
+
+  let textArr = [];
+  let selectArr = [];
+
+  let ret = [];
+  let res = {};
+  // 2から始まるので回転数を１減らす
+  for (let i = 0; i < row - 1; i++) {
+    // 名前
+    id = ID[i][0]
+    if (id != '') {
+
+      nowID = id
+      // ===========================
+      // 値設定有無
+      // ===========================
+      res.id = id
+      res.name = NAME[i][0]
+      res.cautionDay = Caution[i][0]
+    }
+    // ===========================
+    // グラフ設定有無
+    // ===========================
+    if (isGraph[i][0]) {
+      res.graph = true;
+    }
+    // ===========================
+    // Adminに設定する値を記録する
+    // ===========================
+    type = Type[i][0]
+    switch (type) {
+      case 'テキスト':
+        textArr.push(Value[i][0])
+        break;
+      case 'セレクト':
+        // ,で分割して配列化してPUSHする
+        selectArr.push(Value[i][0].split(','))
+        break;
+      default:
+    }
+    if (type == 'テキスト') {
+
+    }
+    // ===========================
+    // データの登録
+    // ===========================
+    // 次が定義されていない　または、　次の値が空でなく、現在の値と違う場合にPUSHする。つまり終了処理
+    if (ID[i + 1] == undefined || (ID[i + 1][0] != '' && ID[i + 1][0] != nowID)) {
+      // ---------------------
+      // テキストの場合
+      // --------------------
+      switch (type) {
+        case 'テキスト':
+          res.text = textArr
+          break;
+        case 'セレクト':
+          res.select = selectArr
+          break;
+        default:
+      }
+      ret.push(res);
+      textArr = []
+      selectArr = []
+      res = {};
+    }
+
+  }
+  console.log(ret);
+  return JSON.stringify(ret)
+
+}
+
+function EXPECTED_GtCategory() {
   let res = [
     {
       id: 'haircut',

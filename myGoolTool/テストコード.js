@@ -9,12 +9,11 @@ function testSheet() {
   const Value = sheet.getValues('F2', 'F' + row);
 
   let id;
-  let name;
   let type;
   let nowID
-  let caution
 
   let textArr = [];
+  let selectArr = [];
 
   let ret = [];
   let res = {};
@@ -25,20 +24,52 @@ function testSheet() {
     if (id != '') {
 
       nowID = id
+      // ===========================
+      // 値設定有無
+      // ===========================
       res.id = id
       res.name = NAME[i][0]
-      res.caution = Caution[i][0]
+      res.cautionDay = Caution[i][0]
     }
+    // ===========================
+    // グラフ設定有無
+    // ===========================
+    if (isGraph[i][0]) {
+      res.graph = true;
+    }
+    // ===========================
+    // Adminに設定する値を記録する
+    // ===========================
     type = Type[i][0]
-    if (type == 'テキスト') {
-      res.text = textArr.push(Value[i][0])
+    switch (type) {
+      case 'テキスト':
+        textArr.push(Value[i][0])
+        break;
+      case 'セレクト':
+        // ,で分割して配列化してPUSHする
+        selectArr.push(Value[i][0].split(','))
+        break;
+      default:
     }
-    console.log(type)
-    // 次が定義されていない　または、　次の値が空でなく、現在の値と違う場合
+    if (type == 'テキスト') {
+
+    }
+    // ===========================
+    // データの登録
+    // ===========================
+    // 次が定義されていない　または、　次の値が空でなく、現在の値と違う場合にPUSHする。つまり終了処理
     if (ID[i + 1] == undefined || (ID[i + 1][0] != '' && ID[i + 1][0] != nowID)) {
-      //最後のデータがPUSHされない
-      if (type = 'テキスト') {
-        res.text = textArr
+      // ---------------------
+      // テキストの場合
+      // --------------------
+      switch (type) {
+        case 'テキスト':
+          res.text = textArr
+          break;
+        case 'セレクト':
+          res.select = selectArr
+          break;
+        default:
       }
       ret.push(res);
       textArr = []
